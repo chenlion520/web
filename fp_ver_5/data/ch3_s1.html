@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch3_s1</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let tmp;
+        let Movie_Score = [2, 0, 1, 0, 1, 2, 1, 0, 2];
+        let Movie_Script = ["a1","a2","a3","a4","a5","a6","a7","a8","a9"];
+        let index_people;
+        let Script_Sel;
+        var chara = ["GFriend_Point","Friend_Point","Death_Point"];
+        function ch3_s1_End(){
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>此章節已結束，你可以在這個時候存檔，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function In_Movie(a){
+            Script_Sel = index_people * 3 + a;
+            tmp = parseInt(localStorage.getItem(chara[index_people])) + parseInt(Movie_Score[Script_Sel]);
+            localStorage.setItem(chara[index_people], tmp );
+            Story_Output = "<h1>" + Movie_Script[Script_Sel] + "</h1>";
+            Story_Output += "<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Before_Cinema(a){
+            let who_array = ["女神","朋友"]
+            index_people = a;
+            if(index_people == 0 & localStorage.getItem("GFriend_Point") == "0"){
+                index_people = 2;
+                localStorage.setItem("GF_Reject_Key", "1")
+                Story_Output = '<h1>被女神拒絕了，只好自己去看....';
+            }
+            else if(index_people == 1 || index_people == 0){
+                Story_Output = '<h1>我想跟'+who_array[index_people]+'一起去看....</h1>';
+            }
+            else{
+                Story_Output = '<h1>我想要自己去看.....</h1>';
+            }
+            Story_Output += "<p><input type = 'button' value = '愛情片' onclick = 'In_Movie(0)'><input type = 'button' value = '大便片' onclick = 'In_Movie(1)'><input type = 'button' value = '悲傷片' onclick = 'In_Movie(2)'></p>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            Story_Output = '<h1>吃完早餐還很早，你決定去看電影，於是你想要約...</h1>';
+            Story_Output += "<p><input type = 'button' value = '女神' onclick = 'Before_Cinema(0)'><input type = 'button' value = '朋友' onclick = 'Before_Cinema(1)'><input type = 'button' value = '自己' onclick = 'Before_Cinema(2)'></p>"
+            Story_Show.innerHTML = Story_Output;            
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>

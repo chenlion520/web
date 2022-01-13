@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch5_s1</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let tmp;
+        function ch5_s1_End(){
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>此章節已結束，你可以在這個時候存檔，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+
+        function Play_W(a){
+            if(a == 0){
+                Story_Output = "<h1>你騎上旋轉木馬，感覺自己又回到從前的時光</h1>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) - 1);
+            }
+            else if(a == 1){
+                Story_Output = "<h1>你坐上摩天輪，看著底下了樂園裡人們開心的樣子，讓你想起過去的自己也曾露出這麼幸福的表情</h1>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 1);
+            }
+            else if(a == 2){
+                Story_Output = "<h1>你繼續坐在長椅上，看著木馬空洞，毫無目的地在原地打轉，就像自己一樣</h1>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 2);
+            }
+            else{
+                Story_Output = "<h1>你覺得這個地方讓你感到噁心，於是你離開了這個地方</h1>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 3);
+            }
+            Story_Output += "<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Happy_Land(){
+            Story_Output = "<h1>你坐在長椅上，看著旋轉木馬轉啊轉，你決定...</h1>";
+            Story_Output += "<p><input type = 'button' onclick = 'Play_W(0)' value = '去坐旋轉木馬'><input type = 'button' onclick = 'Play_W(1)' value = '去坐摩天輪'><input type = 'button' onclick = 'Play_W(2)' value = '繼續坐在椅子上'><input type = 'button' onclick = 'Play_W(3)' value = '回家'></p>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Plant_C(a){
+            if(a == 0){
+                Story_Output = "<h1>你們買了花A</h1>";
+                localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 3);
+            }
+            else if(a == 1){
+                Story_Output = "<h1>你們買了花B</h1>";
+                localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 1);
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 1);
+            }
+            else{
+                Story_Output = "<h1>你們買了花V</h1>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 3);
+            }
+            Story_Output += "<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Market_Date(){
+            Story_Output = "<h1>你和朋友一起去市集，你們到在一個花販前停了下來，想要買一個盆栽回去...</h1><p><input type = 'button' onclick = 'Plant_C(0)' value = '花A'><input type = 'button' onclick = 'Plant_C(1)' value = '花B'><input type = 'button' onclick = 'Plant_C(2)' value = '花V'></p>";
+            Story_Show.innerHTML = Story_Output;
+        }
+
+        function Icecream(a){
+            if(a == 1){
+                Story_Output = "<h1>你買給女神冰淇淋，感情提升，你們一起在公園散步聊天，度過了一個美好的下午</h1><input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>";
+                localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 3);
+            }
+            else{
+                Story_Output = "<h1>你和女神一起在公園散步聊天，度過了一個美好的下午</h1><input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>";
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 2);
+                localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 1);
+            }
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Park_Date(){
+            Story_Output = "<h1>你和女神一起去公園，你看到有一台冰淇淋車...</h1><p><input type = 'button' onclick = 'Icecream(1)' value = '買冰淇淋一起吃'><input type = 'button' onclick = 'Icecream(0)' value = '不買' ></p>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        現在是下午三點，你決定....
+        <p>
+            <button onclick="Park_Date()">和女神去公園</button> 
+            <button onclick="Market_Date()">和朋友去市集</button>
+            <button onclick="Happy_Land()">自己去樂園</button>
+        </p>
+    </div>
+</body>
+</html>
