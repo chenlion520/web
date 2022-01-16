@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>final_project</title>
+    <style>
+        iframe{
+            width: 100vw;
+            height: 80vh;
+        }
+        .Main_Scr{
+            width: 100vw;
+            height: 80vh;
+            text-align: center;
+        }
+        .Fun_Box{
+            text-align: center;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let Next_Output = "";
+        function Delete_Storage(){
+            localStorage.clear();
+        }
+        function Save_Game(){
+            if(localStorage.getItem('Chap_End') == '1'){
+                var gf = localStorage.getItem('GFriend_Point')
+                Story_Output = '<h1>施工中</h1>';
+                Story_Show.innerHTML = Story_Output;
+            }
+        }
+        function Load_Game(){
+            Story_Output = '<h1>施工中</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Initial_Game(){
+            localStorage.clear();
+            localStorage.setItem('Now_Chap', '0');
+            localStorage.setItem('ch0', '0');
+            localStorage.setItem('Chap_End', '0');
+            localStorage.setItem('Friend_Point', '0');
+            localStorage.setItem('GFriend_Point', '0');
+            localStorage.setItem('Death_Point', '0');
+        }
+        function Game_Over(){
+            Story_Output = '<h1>GAME_OVER</h1><h2>Do you want restart?</h2><button id = "Restart_Game">restart</button>';
+            Story_Show.innerHTML = Story_Output;
+            let Restart_Game = document.getElementById("Restart_Game");
+            Restart_Game.addEventListener("click", Story_Begin, false);
+        }
+        function End_Story(){
+            console.log(parseInt(localStorage.getItem('Death_Point')));
+            console.log(parseInt(localStorage.getItem('GFriend_Point')));
+            console.log(parseInt(localStorage.getItem('Friend_Point')));
+            if(parseInt(localStorage.getItem('GFriend_Point')) > 10){
+                Story_Output = '<iframe src = "data/END_GFriend.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            if(parseInt(localStorage.getItem('Friend_Point')) > 10){
+                Story_Output = '<iframe src = "data/END_Friend.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            else{
+                Story_Output = '<iframe src = "data/END_Killer.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            return;
+        }
+        function Next_Story(){
+            if(localStorage.getItem('Chap_End') == '1'){
+                let Now_Chap = localStorage.getItem('Now_Chap');
+                if(Now_Chap == '1')      Story_Ch2();
+                else if(Now_Chap == '2') Story_Ch3();
+                else if(Now_Chap == '3') Story_Ch4();
+                else if(Now_Chap == '4') Story_Ch5();
+                else if(Now_Chap == '5') End_Story();
+            }
+        }
+        function Story_Ch5(){
+            localStorage.setItem('Now_Chap', '5');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch5_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch4(){
+            localStorage.setItem('Now_Chap', '4');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch4_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch3(){
+            localStorage.setItem('Now_Chap', '3');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch3_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch2(){
+            localStorage.setItem('Now_Chap', '2');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch2_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch1(){
+            localStorage.setItem('Now_Chap', '1');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch1_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Begin(){
+            let tmp = parseInt(localStorage.getItem('ch0'));
+            localStorage.setItem('ch0', tmp + 1);
+            Story_Output = '<h1>你醒來了，現在是早上8點，可以感覺到窗外是出太陽的好天氣，你決定?</h1><button id = "Sleep">繼續睡</button><button id = "Wake_Up">起床</button>';
+            Story_Show.innerHTML = Story_Output;
+            document.getElementById("Sleep").addEventListener('click', Game_Over, false);
+            document.getElementById("Wake_Up").addEventListener('click', Story_Ch1, false);
+        }
+        function Game_Rule(){
+            Story_Output = '<h1>在遊戲章節結束跳出提示時，才可以按下"下一個章節"，"存檔"的按鈕</h1><h1>在沒有存檔的情況，按下"回首頁"，可能導致進度流失請注意</h1><h1>如果看完規則的話，可按下"回首頁"</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Game_Menu(){
+            Initial_Game();
+            Story_Output = '<button id = "Start_Button">start</button><button id = "Rule_Button">rule</button>';
+            Story_Show.innerHTML = Story_Output;
+            document.getElementById("Start_Button").addEventListener("click", Story_Begin,false);
+            document.getElementById("Rule_Button").addEventListener("click", Game_Rule,false);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            Game_Menu();
+        }
+        window.addEventListener("load",start,false);
+    </script>
+</head>
+<body>
+    <div id = "Story_Show" class = "Main_Scr">
+    </div>
+    <div class = "Fun_Box">
+        <h2>功能表</h2>
+        <button onclick = "Next_Story()">下一個章節</button>
+        <button onclick = "Save_Game()">存檔</button>
+        <button onclick = "Load_Game()">讀檔</button>
+        <button onclick = "Game_Menu()">回首頁</button>
+    </div>
+</body>
+</html>
