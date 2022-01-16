@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch4_s1</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let tmp;
+
+        function ch4_s1_End(){
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>此章節已結束，你可以在這個時候存檔，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+
+        function Tea_Time(){
+            localStorage.setItem("Ch5_Sel", "0");
+            localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 2);
+            Story_Output = '<h1>你和女神一起去吃下午茶，一起度過了一段美好的時光，感情也因此提升了</h1><button onclick = "ch4_s1_End()">繼續故事...</button>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Ramen_Self(){
+            localStorage.setItem("Ch5_Sel", "2");
+            Random_Event = Math.floor(Math.random()*3);
+            Story_Output = '<h1>自己去吃拉麵，';
+            if(Random_Event == 1){
+                Story_Output += '拉麵上桌時，服務生不小心整碗麵撒了出來，你全身都沾滿了拉麵，雖然店家一直道歉，但你的心情還是糟到不行</h1><button onclick = "ch4_s1_End()">繼續故事...</button>';
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point')) + 3);
+            }
+            else{
+                Ramen_Ingredients = ['紅薑','溏心蛋','紅薑和溏心蛋'];
+                Ramen_Story = [',最討厭拉麵裡面有紅薑，一看到他整個心情就不好了','，最喜歡吃溏心蛋，看到裡面有一顆蛋，整個心情就好了','，雖然有最討厭的紅薑，但也有最喜歡的溏心蛋，算了吧'];
+                Ramen_Index =  Math.floor(Math.random()*3);
+                if(Ramen_Index == 0)    localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point'))+1);
+                else if(Ramen_Index == 1)   localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point'))-1);
+                Story_Output += '麵上桌時，你發現拉麵裡面居然有' + Ramen_Ingredients[Ramen_Index] + Ramen_Story[Ramen_Index] + '</h1></h1><button onclick = "ch4_s1_End()">繼續故事...</button>';
+            }
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Ramen_Friend(){
+            localStorage.setItem("Ch5_Sel", "1");
+            localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 2);
+            Ramen_Ingredients = ['紅薑','溏心蛋','紅薑和溏心蛋'];
+            Ramen_Story = [',最討厭拉麵裡面有紅薑，一看到他整個心情就不好了','最喜歡吃溏心蛋，看到裡面有一顆蛋，整個心情就好了','雖然有最討厭的紅薑，但也有最喜歡的溏心蛋，算了吧'];
+            Ramen_Index =  Math.floor(Math.random()*3);
+            if(Ramen_Index == 0)    localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point') )+1);
+            else if(Ramen_Index == 1)   localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point') )-1);
+            Story_Output = '<h1>和朋友一起去吃拉麵，麵上桌時，發現拉麵裡面居然有' + Ramen_Ingredients[Ramen_Index] + Ramen_Story[Ramen_Index] + '</h1></h1><button onclick = "ch4_s1_End()">繼續故事...</button>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            Story_Output = '<h1>看完電影還很早你決定';
+            if(localStorage.getItem("GF_Reject_Key") == '1'){
+                Story_Output += '去吃拉麵....</h1><button onclick = "Ramen_Self()">自己去</button><button onclick = "Ramen_Friend()">和朋友吃</button>';
+            }
+            else{
+                Story_Output += '....</h1><button onclick = "Tea_Time()">和女神吃下午茶</button><button onclick = "Ramen_Self()">自己去吃拉麵</button><button onclick = "Ramen_Friend()">和朋友吃拉麵</button>';
+            }
+            Story_Show.innerHTML = Story_Output;            
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>

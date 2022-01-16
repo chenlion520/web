@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch3_s1</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+        img {
+            height: 200vh;
+        }
+    </style>
+    <script>
+        let story = ["","","(嘈雜聲...)","(一片安靜後)","房間一片混亂...亮起的手機是未讀的訊息","新聞報導:","有一名獨居男子陳屍於家中","具目擊者所稱","一頓吵鬧聲後，沒有任何人出來...","",""]
+        let Story_Output = "";
+        let time;
+        let time2;
+        let a = 1;
+        let b = 0;
+        let Story_Show = document.getElementById("Story_Show");
+        function flash(){
+            if(a == 50){
+                clearInterval(time2);
+                window.open(url = 'http://www.life1995.org.tw/');
+                Story_Show.innerHTML = Story_Output;
+            }
+            a++
+            if(b == 0){
+                Story_Output = '<div><img src = "4.jpg" ></div>';
+            }
+            else{
+                Story_Output = '';
+            }
+            
+            Story_Show.innerHTML = Story_Output;
+            b = (b+1)%2;
+        }
+        function test(){
+            console.log(a)
+            if(a > 8){
+                
+                Story_Output = '<h1>看來這次....還是我自己的幻想嗎?</h1>'
+            }
+            else{
+                Story_Output += '<h1>'+story[a+1]+'</h1>'
+                
+            }
+            if(a == 12){
+                clearInterval(time);
+                time2 = setInterval(() => {flash()}, 100);
+            }
+            Story_Show.innerHTML = Story_Output;
+            a++;
+            
+        }
+        function start(){
+            Story_Show = document.getElementById("Story_Show");
+            Story_Output = ''
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(() => {test()}, 1500);
+            //clearInterval(time);
+            
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>
