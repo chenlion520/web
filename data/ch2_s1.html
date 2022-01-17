@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch2_s1</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+            
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script>
+        let Story_Output = "";
+        let Story_Line = [["<h1>從起床到現在過了很久了","<p>肚子覺得有一點餓","<p>今天就久違的出去吃個早餐吧","<p>你決定....<h1><p><button onclick = 'Conve_Store_1()'>吃便利商店</button><button onclick = 'Break_Shop_1()'>吃早餐店</button>"],
+                          ["<h1>你決定去附近的超商買早餐","<p>一進到超商，你就看到了心中的女神","<p>偷偷喜歡她很久了","<p>於是你上前和她打個招呼","<p>你們開心地聊了一下天後，她就先離開了","<p>你覺得非常開心</h1>","<p><button onclick = 'See_Something()'>繼續故事...</button>"],
+                          ["<h1>你決定去附近的早餐店吃早餐","<p>遠遠的就聽到有人在叫你的名字","<p>原來是你最好的朋友","<p>(他怎麼會在這買早餐)","<p>雖然有所疑問，但你還是熱情的和他打招呼","<p>於是你們一起吃早餐，開心地聊了一早上....</h1>","<button onclick = 'See_Something()'>繼續故事...</button>"],
+                          ["<h1>在你吃完早餐後回家的路上","<p>你看到巷子口發生了車禍","<p>有一個人躺在血泊之中","<p>突然一個強烈的噁心感湧上","<p>你覺得好像有什麼東西忘記了，但又想不起來","<p>噁心感和頭痛到逼得你早餐快吐出來了","<p>你踩著不穩的步伐，決定....</h1>","<button onclick = 'Remind_Memory()'>試著回想</button><button onclick = 'Do_Nothing_1()'>快步回家</button>"],
+                          ["<h1>儘管你頭痛欲裂，但還是試著去想起那些被遺忘的事","<p>車站月台","、夕陽","、嘈雜聲","、悲傷的眼神","<p>在怎麼努力回想，就只能想起這幾個畫面","<p>你喘著粗氣，慢慢的走回家...</h1>","<button onclick = 'ch2_s1_End()'>繼續故事...</button>"],
+                          ["<h1>你快要被這些噁心的感覺壓垮","<p>你只想趕快擺脫他們","<p>於是你頭也不回的就回家了...</h1>","<button onclick = 'ch2_s1_End()'>繼續故事...</button>"]];
+        let chapter_in;
+        let Now_Chap = parseInt(localStorage.getItem("Now_Chap"));
+        function text_output(ci){
+            localStorage.setItem("cin", ci);
+            let i = 0;
+            Story_Output = "<h1>";
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(function(){
+                if(i < Story_Line[ci].length){
+                    Story_Output += Story_Line[ci][i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 500); 
+        }
+        function ch2_s1_End(){
+            localStorage.setItem("cin", '-2');
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>第二章結束，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Do_Nothing_1(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) + 2);
+            chapter_in = 5;
+            text_output(chapter_in);
+        }
+        function Remind_Memory(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) - 1);
+            chapter_in = 4;
+            text_output(chapter_in);
+        }
+        function See_Something(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) + 1);
+            chapter_in = 3;
+            text_output(chapter_in);
+        }
+        function Break_Shop_1(){
+            localStorage.setItem('Friend_Point', parseInt(localStorage.getItem('Friend_Point')) + 2);
+            chapter_in = 2;
+            text_output(chapter_in);
+        }
+        function Conve_Store_1(){
+            localStorage.setItem('GFriend_Point', parseInt(localStorage.getItem('GFriend_Point')) + 2);
+            chapter_in = 1;
+            text_output(chapter_in);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            if(localStorage.getItem("cin") == '-1'){
+                chapter_in = 0;
+                text_output(chapter_in);
+            }    
+            else if(localStorage.getItem("cin") == '-2') ch2_s1_End();
+            else   {
+                chapter_in = parseInt(localStorage.getItem("cin"));
+                text_output(chapter_in);
+            }
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>

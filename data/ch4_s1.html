@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch4_s1</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let Story_Line = [["<h1>看完電影後還很早，你決定約女神去吃下午茶...?</h1>","<input type = 'button' onclick = 'Tea_Time()' value = '約'><input type = 'button' onclick = 'Split1()' value = '算了'>"],
+                          ["<h1>看完電影後還很早，你決定約朋友去吃拉麵...?</h1>","<input type = 'button' onclick = 'Ramen_Friend()' value = '約'><input type = 'button' onclick = 'Split1()' value = '算了'>"],
+                          ["<h1>看完電影後還很早，你決定去吃拉麵</h1>","<input type = 'button' onclick = 'Ramen_Self()' value = '前往拉麵店...'>"],
+                          ["<h1>和女神道別後","<p>你忽然很想吃拉麵","<p>於是你決定...</h1>","<p><input type = 'button' onclick = 'Ramen_Friend() value = '約朋友去吃'><input type = 'button' onclick = 'Ramen_Self()' value = '自己去'><p>"],
+                          ["<h1>和朋友道別後","<p>你決定自己去吃拉麵....</h1>","<input type = 'button' onclick = 'Ramen_Self()' value = '前往拉麵店...'>" ],
+                          ["<h1>跟女神吃完一頓美味的晚餐之後<p>","但她似乎一點都不在意你吃的怎麼樣<p>","女神似乎跟平常有點不太一樣<p>","一有這個念頭<p>","女神就起身準備要走了...<p>","但不知道要不要約她出去...</h1>","<input type = 'button' onclick = 'ch4_s1_End()' value = '繼續故事...'>"],
+                          ["<h1>兩邊空無一人的座位...<p>","看來還是跟自己最實在..........<p>","突然你呼吸不到空氣<p>","起身跑向門口<p>","大口呼吸空氣之後..想要到處走一走...</h1>","<input type = 'button' onclick = 'ch4_s1_End()' value = '繼續故事...'>"],
+                          ["<h1>跟朋友又聊了很多天<p>","但他只關心自己吃得怎麼樣<p>","他似乎跟平常有點不太一樣<p>","一有這個念頭<p>","朋友就把你拉出去了...</h1>","<input type = 'button' onclick = 'ch4_s1_End()' value = '繼續故事...'>"]
+                    ];
+        let chapter_in = 0;
+        let Now_Chap = parseInt(localStorage.getItem("Now_Chap"));
+        function text_output(ci){
+            localStorage.setItem("cin", ci);
+            let i = 0;
+            Story_Output = "<h1>";
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(function(){
+                if(i < Story_Line[ci].length){
+                    Story_Output += Story_Line[ci][i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 500); 
+        }
+        function ch4_s1_End(){
+            localStorage.setItem("cin", '-4');
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>第四章結束，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+
+        function Tea_Time(){
+            localStorage.setItem("Ch5_Sel", "0");
+            localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 2);
+            Story_Output = '<h1>到了咖啡廳之後..發現突然好餓<p>我想要點個</h1><button onclick = "Split2()">巧克力大香蕉鬆餅</button><button onclick = "Split2()">省錢好了，小杯紅茶</button>';
+            Story_Show.innerHTML = Story_Output;
+            
+        }
+        function Ramen_Self(){
+            localStorage.setItem("Ch5_Sel", "2");
+            Random_Event = Math.floor(Math.random()*3);
+            Story_Output = '<h1>自己去吃拉麵，';
+            if(Random_Event == 1){
+                Story_Output += '拉麵上桌時，服務生不小心整碗麵撒了出來，你全身都沾滿了拉麵，雖然店家一直道歉，但你的心情還是糟到不行</h1><button onclick = "Split3()">繼續故事...</button>';
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point')) + 3);
+            }
+            else{
+                Ramen_Ingredients = ['紅薑','溏心蛋','紅薑和溏心蛋'];
+                Ramen_Story = [',最討厭拉麵裡面有紅薑，一看到他整個心情就不好了','，最喜歡吃溏心蛋，看到裡面有一顆蛋，整個心情就好了','，雖然有最討厭的紅薑，但也有最喜歡的溏心蛋，算了吧'];
+                Ramen_Index =  Math.floor(Math.random()*3);
+                if(Ramen_Index == 0)    localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point'))+1);
+                else if(Ramen_Index == 1)   localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point'))-1);
+                Story_Output += '麵上桌時，你發現拉麵裡面居然有' + Ramen_Ingredients[Ramen_Index] + Ramen_Story[Ramen_Index] + '</h1></h1><button onclick = "Split3()">繼續故事...</button>';
+            }
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Ramen_Friend(){
+            localStorage.setItem("Ch5_Sel", "1");
+            localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 2);
+            Ramen_Ingredients = ['紅薑','溏心蛋','紅薑和溏心蛋'];
+            Ramen_Story = [',最討厭拉麵裡面有紅薑，一看到他整個心情就不好了','最喜歡吃溏心蛋，看到裡面有一顆蛋，整個心情就好了','雖然有最討厭的紅薑，但也有最喜歡的溏心蛋，算了吧'];
+            Ramen_Index =  Math.floor(Math.random()*3);
+            if(Ramen_Index == 0)    localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point') )+1);
+            else if(Ramen_Index == 1)   localStorage.setItem("Death_Point", parseInt(localStorage.getItem('Death_Point') )-1);
+            Story_Output = '<h1>和朋友一起去吃拉麵，麵上桌時，發現拉麵裡面居然有' + Ramen_Ingredients[Ramen_Index] + Ramen_Story[Ramen_Index] + '</h1><button onclick = "Split4()">繼續故事...</button>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        
+        function Split1(){
+            if(localStorage.getItem("Movie_Who") == '0'){
+                chapter_in = 3;
+                text_output(chapter_in);
+            }
+            else if(localStorage.getItem("Movie_Who") == '1'){
+                chapter_in = 4;
+                text_output(chapter_in);
+            }
+        }
+        function Split2(){
+            text_output(5)
+        }
+        function Split3(){
+            text_output(6)
+        }
+        function Split4(){
+            text_output(7)
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            if(localStorage.getItem("cin") == '-3'){
+                if(localStorage.getItem("Movie_Who") == '0'){
+                    chapter_in = 0;
+                    text_output(chapter_in);
+                }
+                else if(localStorage.getItem("Movie_Who") == '1'){
+                    chapter_in = 1;
+                    text_output(chapter_in);
+                }
+                else{
+                    chapter_in = 2;
+                    text_output(chapter_in);
+                }
+            }
+            else if(localStorage.getItem("cin") == '-4')    ch4_s1_End();
+            else{
+                chapter_in = parseInt(localStorage.getItem("cin"));    
+                text_output(chapter_in);
+            }      
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DE</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+        img {
+            height: 200vh;
+        }
+        .a1{
+            color:rosybrown;
+        }
+        .a2{
+            color: white;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script>
+        let Story_Output = "";
+        function De_4_1(){
+            let i;
+            let j = 0;
+            Story_Output = ""
+            let index;
+            let x;
+            let y;
+            let str1 = "南無喝囉怛那哆囉夜耶南無阿唎耶婆盧羯帝爍鉢囉耶菩提薩埵婆耶摩訶薩埵婆耶摩訶迦盧尼迦耶唵薩皤囉罰曳數怛那怛寫南無悉吉唎埵伊蒙阿唎耶婆盧吉帝室佛囉楞馱婆南無那囉謹墀醯唎摩訶皤哆沙咩薩婆阿他豆輸朋阿逝孕薩婆薩哆那摩婆薩多那摩婆伽摩罰特豆怛姪他唵阿婆盧醯盧迦帝迦羅帝夷醯唎摩訶菩提薩埵薩婆薩婆摩囉摩囉摩醯摩醯唎馱孕俱盧俱盧羯蒙度盧度盧罰闍耶帝摩訶罰闍耶帝陀囉陀囉唎尼室佛囉耶遮囉遮囉摩麼罰摩囉穆帝隸伊醯伊醯室那室那阿囉嘇佛囉舍利罰娑罰嘇佛囉舍耶呼嚧呼嚧摩囉呼嚧呼嚧醯利娑囉娑囉悉唎悉唎蘇嚧蘇嚧菩提夜菩提夜菩馱夜菩馱夜彌地利夜那囉謹墀地利瑟尼那婆夜摩那娑婆訶悉陀夜娑婆訶摩訶悉陀夜娑婆訶悉陀喻藝室皤囉耶娑婆訶那囉謹墀娑婆訶摩囉那囉娑婆訶悉囉僧阿穆佉耶娑婆訶婆摩訶阿悉陀夜娑婆訶者吉囉阿悉陀夜娑婆訶波陀摩羯悉陀夜娑婆訶那囉謹墀皤伽囉耶娑婆訶摩婆利勝羯囉夜娑婆訶南無喝囉怛那哆囉夜耶南無阿唎耶婆嚧吉帝爍皤囉耶娑婆訶唵悉殿都漫多囉跋陀耶娑婆訶"
+            let time = setInterval(function(){
+                for(i = 0; i < 50; i++){
+                    index = Math.floor(Math.random()*str1.length); 
+                    x = Math.floor(Math.random()*100);
+                    y = Math.floor(Math.random()*100);
+                    Story_Output += ("<p style = 'float:left;position:absolute;color:yellow;top:"+ x+"%;left:"+y+"%;'>"+str1[index]);
+                    Story_Show.innerHTML = Story_Output;
+                }
+                j++;
+                if(j == 20){
+                    clearInterval(time);
+                    window.close();
+                }
+            },10)
+        }
+        function DE_4(){
+            let i = 0;
+            let j = 1;
+            $("div").css("background-color","black");
+            $("body").css("background-color","black");
+            let line=["<h1 class = 'a1'>喂","<h1 class = 'a1'>醒醒","<h1 class = 'a1'>你以為這樣就能躲過了嗎?","<h1 class = 'a1'>別以為你能逃過我的手掌心","<h1 class = 'a1'>你犯下的罪永遠都彌補不了","<h1 class = 'a1'>不管你想逃避多少次","<h1 class = 'a1'>我都會找到你然後抓住你","<h1 class = 'a1'>將你再次拖入地獄的深淵..."];
+            let time = setInterval(function(){
+                Story_Output = line[i];
+                Story_Show.innerHTML = Story_Output;
+                i++
+                if(i == line.length){
+                    clearInterval(time);
+                    De_4_1();
+                }
+            },1000);
+        }
+        function DE_3_1(){
+            let i = 0;
+            let ttim = setInterval(function(){
+                let clearbtt = document.getElementById("btt-"+i);
+                document.body.removeChild(clearbtt);
+                i++;
+                if(i > 30)  clearInterval(ttim);
+            },100);
+            Story_Output = "<h1 class = 'a2'>抓到那道光的瞬間，你的意識被拉回了現實...</h1>";
+            Story_Show.innerHTML = Story_Output;
+            setTimeout(function(){
+                window.close();
+            }, 3000);
+        }
+        function playv(){
+            $('#Story_Show').html('<audio autoplay="autoplay"><source src="audio/alarm0.mp3" type="audio/mpeg"/></audio>');
+        }
+        function DE_3(){
+            $("div").css("background-color","black");
+            $("body").css("background-color","black");
+            Story_Output = "<h1 class = 'a2'>它又出現了<p>眼前瞬間變得一片黑暗<p>就像身處在深海一樣寧靜且平和<p>這時你看到眼前出現了一道光<p>你想伸手去抓住它</h1>";
+            Story_Show.innerHTML = Story_Output;
+            setTimeout(
+                function(){
+                    Story_Show.innerHTML = Story_Output;
+                    let i = 0;
+                    let time = setInterval(function(){
+                        let x = Math.floor(Math.random()*90);
+                        let y = Math.floor(Math.random()*90);
+                        let btt = document.createElement("input");
+                        btt.setAttribute("type", "button");
+                        btt.setAttribute("value", "光");
+                        btt.setAttribute("style","left:"+x+"%;top:"+y+"%;position:absolute;float:left;width:75px;height:75px;background-color:yellow;color:orange");   
+                        btt.setAttribute("id", "btt-" + i);
+                        if(i == 15)  btt.setAttribute("onclick", "DE_3_1()");
+                        else         btt.setAttribute("onclick", "playv()");
+                        if(i > 40)   clearInterval(time);
+                        document.body.appendChild(btt);
+                        Story_Show.innerHTML = Story_Output;
+                        i++;
+                    },300);
+                },3000);
+        }
+        function DE_2(){
+            $("div").css("background-color","fuchsia");
+            $("body").css("background-color","fuchsia");
+            Story_Output = "<h1>你的頭突然開始痛了起來<p>感覺那個東西又出現了<p>這次感覺它在說些甚麼<p>你聽不太清楚那聲音<p>當你試著找出它的時候<p>它的氣息又消失了...</h1>";
+            Story_Show.innerHTML = Story_Output;
+            setTimeout(function(){
+                window.close();
+            }, 3000);
+        }
+        function DE_1(){
+            $("div").css("background-color","burlywood");
+            $("body").css("background-color","burlywood");
+            Story_Output = "<h1>你突然打了個冷顫<p>感覺有什麼東西在你背後<p>但當你轉頭查看後<p>那個氣息就瞬間消失了...</h1>";
+            Story_Show.innerHTML = Story_Output;
+            setTimeout(function(){
+                window.close();
+            }, 3000);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            Story_Output = ''
+            let DP = parseInt(localStorage.getItem("Death_Point"));
+            if(DP > 3 & DP < 7){
+                DE_1();
+            }
+            else if(DP > 6 & DP < 10){
+                DE_2();
+            }
+            else if(DP > 9 & DP < 13){
+                DE_3();
+            }
+            else if(DP > 12){
+                DE_4();
+            }
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>

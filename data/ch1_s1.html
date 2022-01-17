@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+        span{
+            color: blue;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let Story_Line = [["<h1><p>你慢慢地坐起身來並爬下床</p>","<p>上廁所後洗手時，抬頭看著鏡子裡的自己</p>","<p>已經很久沒有整理自己了</p>","你決定....</h1><button onclick = 'Brush_Teeth()'>好好地整理自己的儀容</button><button onclick = 'Do_Nothing_1()'>什麼也不做</button>"],
+                          ["<h1><p>你覺得也是時候該清理自己","<p>於是久違的把身體洗乾淨","<p>久久沒清理的鬍子也剃乾淨","<p>整個人變得清爽許多</h1>","<p><button onclick = 'ch1_s1_1()'>繼續故事...</button>"],
+                          ["<h1>整理完儀容後","<p>走出浴室","<p>看到今天的天氣非常好...</h1>","<p><button onclick = 'ch1_s1_1()'>繼續故事...</button>"],
+                          ["<audio src='audio/phone_ring.mp3' autoplay = 'True' loop = 'True'></audio>","<h1>發現桌上的手機在震動，好像有人傳訊息的樣子","<p>你吞了一下口水心想，這時間點會有誰傳給自己訊息","<p>看著響不停的手機，你決定....</h1>","<p><button onclick = 'Take_Phone()'>拿起手機查看</button><button onclick = 'Do_Nothing_2()'>不理它</button>"],
+                          ["<h1>不可能有人會傳訊息給我的","<p>(我想是詐騙集團吧)","<p>於是你就這樣無視手機裡傳來的訊息...</h1>","<p><button onclick = 'ch1_s1_End()'>繼續故事...</button>"],
+                          ["<h1>(來自XXX的訊息)","<p>奇怪的是，你不認識這個名字","<p>你也看不懂這則訊息在寫甚麼..","<p>(他到底是誰，為什麼要傳這個奇怪的訊息....)","<p><button onclick = 'ch1_s1_End()'>繼續故事...</button>"]];
+        let chapter_in;
+        let Now_Chap = parseInt(localStorage.getItem("Now_Chap"));
+
+        function text_output(ci){
+            let i = 0;
+            localStorage.setItem("cin", ci);
+            Story_Output = "<h1>";
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(function(){
+                if(i < Story_Line[ci].length){
+                    Story_Output += Story_Line[ci][i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 500); 
+        }
+        function ch1_s1_End(){
+            localStorage.setItem("cin", '-1');
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>第一章結束，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Take_Phone(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) - 1);
+            chapter_in = 5;
+            text_output(chapter_in);
+        }
+        function Do_Nothing_2(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) + 2);
+            chapter_in = 4;
+            text_output(chapter_in);
+        }
+        function ch1_s1_1(){
+            chapter_in = 3;
+            text_output(chapter_in);
+        }
+        function Do_Nothing_1(){
+            localStorage.setItem('Death_Point', parseInt(localStorage.getItem('Death_Point')) + 2);
+            chapter_in = 2;
+            text_output(chapter_in);
+        }
+        function Brush_Teeth(){
+            chapter_in = 1;
+            text_output(++chapter_in);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show"); 
+            if(localStorage.getItem("cin") == null){
+                chapter_in = 0;
+                text_output(chapter_in);
+            }   
+            else if(localStorage.getItem("cin") == '-1') ch1_s1_End();
+            else   {
+                chapter_in = parseInt(localStorage.getItem("cin"));
+                text_output(chapter_in);
+            }
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+    </div>
+</body>
+</html>

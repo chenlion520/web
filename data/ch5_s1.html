@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch5_s1</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        let Story_Line = [["<h1>你和女神吃完下午茶，現在是下午三點，你決定....</h1>","<p><button onclick='Park_Date()'>和女神去公園</button><button onclick='Happy_Land()'>不約</button></p>"],
+                          ["<h1>你和朋友吃完拉麵，現在是下午三點，你決定....</h1><p><button onclick='Market_Date()'>和朋友去市集</button><button onclick='Happy_Land()'>不約</button></p>"],
+                          ["<h1>和他道別後，你決定一個人去遊樂園","<p>你坐在長椅上，看著旋轉木馬轉啊轉，你決定...</h1>","<p><input type = 'button' onclick = 'Play_W(0)' value = '去坐旋轉木馬'><input type = 'button' onclick = 'Play_W(1)' value = '去坐摩天輪'><input type = 'button' onclick = 'Play_W(2)' value = '繼續坐在椅子上'><input type = 'button' onclick = 'Play_W(3)' value = '回家'></p>"],
+                          ["<h1>吃完拉麵後，你決定一個人去遊樂園","<p>你坐在長椅上，看著旋轉木馬轉啊轉，你決定...</h1>","<p><input type = 'button' onclick = 'Play_W(0)' value = '去坐旋轉木馬'><input type = 'button' onclick = 'Play_W(1)' value = '去坐摩天輪'><input type = 'button' onclick = 'Play_W(2)' value = '繼續坐在椅子上'><input type = 'button' onclick = 'Play_W(3)' value = '回家'></p>"],
+                          ["<h1>你騎上旋轉木馬，感覺自己又回到從前的時光<p>","看來我也該回家了...","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你坐上摩天輪，看著底下了樂園裡人們開心的樣子，讓你想起過去的自己也曾露出這麼幸福的表情</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你繼續坐在長椅上，看著木馬空洞，毫無目的地在原地打轉，就像自己一樣<p>","看來我也該回家了...","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你覺得這個地方讓你感到噁心，於是你離開了這個地方</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你和女神一起去公園，你看到有一台冰淇淋車...</h1>","<p><input type = 'button' onclick = 'Icecream(1)' value = '買冰淇淋一起吃'><input type = 'button' onclick = 'Icecream(0)' value = '不買' ></p>"],
+                          ["<h1>你買給女神冰淇淋，感情提升，你們一起在公園散步聊天，度過了一個美好的下午<p>","但時間也不早了..就跟女神告別回家吧","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你和女神一起在公園散步聊天，度過了一個美好的下午<p>","但時間也不早了..就跟女神告別回家吧","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你和朋友一起去市集，你們到在一個花販前停了下來，想要買一個盆栽回去...</h1>","<p><input type = 'button' onclick = 'Plant_C(0)' value = '花A'><input type = 'button' onclick = 'Plant_C(1)' value = '花B'><input type = 'button' onclick = 'Plant_C(2)' value = '花V'></p>"],
+                          ["<h1>你們買了花A<p>","但時間也不早了...看來我也該回家了...","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你們買了花B<p>","但時間也不早了...看來我也該回家了...","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"],
+                          ["<h1>你們買了花V<p>","但時間也不早了...看來我也該回家了...","</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch5_s1_End()'>"]
+                        ];
+        let chapter_in = 0;
+        let Now_Chap = parseInt(localStorage.getItem("Now_Chap"));
+
+        function text_output(ci){
+            localStorage.setItem("cin", ci);
+            let i = 0;
+            Story_Output = "<h1>";
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(function(){
+                if(i < Story_Line[ci].length){
+                    Story_Output += Story_Line[ci][i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 500); 
+        }
+        function ch5_s1_End(){
+            localStorage.setItem("cin", '-5');
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>最後一章結束，下一篇故事為最後結局<p>準備好請點擊下一章</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+
+        function Play_W(a){
+            if(a == 0){
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) - 1);
+                chapter_in = 4;
+                text_output(chapter_in);
+            }
+            else if(a == 1){
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 1);
+                chapter_in = 5;
+                text_output(chapter_in);
+            }
+            else if(a == 2){
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 2);
+                chapter_in = 6;
+                text_output(chapter_in);
+            }
+            else{
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 3);
+                chapter_in = 7;
+                text_output(chapter_in);
+            }
+        }
+        function Happy_Land(){
+            if(localStorage.getItem("Ch5_Sel") == 0 || localStorage.getItem("Ch5_Sel") == 1){
+                chapter_in = 2;
+                text_output(chapter_in);
+            }
+            else{
+                chapter_in = 3;
+                text_output(chapter_in);
+            }
+        }
+        function Plant_C(a){
+            if(a == 0){
+                localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 3);
+                chapter_in = 12;
+                text_output(chapter_in);
+            }
+            else if(a == 1){
+                localStorage.setItem("Friend_Point", parseInt(localStorage.getItem("Friend_Point")) + 1);
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 1);
+                chapter_in = 13;
+                text_output(chapter_in);
+            }
+            else{
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 3);
+                chapter_in = 14;
+                text_output(chapter_in);
+            }
+        }
+        function Market_Date(){
+            chapter_in = 11;
+            text_output(chapter_in);
+        }
+
+        function Icecream(a){
+            if(a == 1){
+                localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 3);
+                chapter_in = 9;
+                text_output(chapter_in);
+            }
+            else{
+                localStorage.setItem("Death_Point", parseInt(localStorage.getItem("Death_Point")) + 2);
+                localStorage.setItem("GFriend_Point", parseInt(localStorage.getItem("GFriend_Point")) + 1);
+                chapter_in = 10;
+                text_output(chapter_in);
+            }
+        }
+        function Park_Date(){
+            chapter_in = 8;
+            text_output(chapter_in);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            if(localStorage.getItem("cin") == '-4'){
+                if(localStorage.getItem("Ch5_Sel") == 0){
+                    chapter_in = 0;
+                    text_output(chapter_in);
+                }
+                else if(localStorage.getItem("Ch5_Sel") == 1){
+                    chapter_in = 1;
+                    text_output(chapter_in);
+                }
+                else{
+                    Happy_Land();
+                }
+            }
+            else if(localStorage.getItem("cin") == '-5')  ch5_s1_End();
+            else    {
+                chapter_in = parseInt(localStorage.getItem("cin"));
+                text_output(chapter_in);
+            }
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ch3_s1</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            text-align: center;
+            height: 80vh;
+            width: 100vw;
+        }
+    </style>
+    <script>
+        let Story_Output = "";
+        
+        let index_people;
+        let Script_Sel;
+
+        var chara = ["GFriend_Point","Friend_Point","Death_Point"];
+        let who_array = ["女神","朋友"];
+        let Movie_Score = [2, 0, 1, 0, 1, 2, 1, 0, 2];
+        let Movie_Script = ["a1","a2","a3","a4","a5","a6","a7","a8","a9"];
+        let Story_Line = [["<h1>回到家後，你沉澱了一下自己的情緒","<p>看了一下時間發現還很早","<p>你想著這時間應該可以去看個電影","<p>你很喜歡看電影，曾經常去電影院看電影","<p>於是你拿起手機，打算約誰一起看電影...</h1>","<p><input type = 'button' value = '女神' onclick = 'Before_Cinema(0)'><input type = 'button' value = '朋友' onclick = 'Before_Cinema(1)'><input type = 'button' value = '自己' onclick = 'Before_Cinema(2)'></p>"],
+                          ["<h1>你拿起手機約女神出來看電影","<p>到了電影院後你們選了一部愛情片","<p>這部電影敘述著一對情侶私奔後，克服萬難終成眷屬的故事","<p>你和女神很喜歡這部電影","<p>看完電影後，你們熱烈的討論劇情</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你拿起手機約女神出來看電影","<p>到了電影院後你們選了一部大便片","<p>你很喜歡看這種評價不太好的電影，但女神不喜歡","<p>電影結束後，感覺到她沒有很喜歡這部電影...</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你拿起手機約女神出來看電影","<p>到了電影院後你們選了一部悲劇片","<p>這部電影述說男主角因為意外傷害了身邊重要的人而精神錯亂的故事","<p>你和女神都很專注在劇情中","<p>電影結束後，你和女神都被電影的情緒影響，哭了出來....</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你拿起手機約朋友出來看電影","<p>到了電影院後你們選了一部愛情片","<p>這部電影講述男主角和好朋友同時愛上了一個人</p><p>最後男主角離開後找到真愛的故事","<p>你和朋友都喜歡這部電影","<p>但兩個男生一起來看愛情電影總覺得怪怪的....</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你拿起手機約朋友出來看電影","<p>到了電影院後你們選了一部大便片","<p>這部電影描述主角只能活在同一天裡於是發瘋的故事","<p>剛好朋友很喜歡電影裡的主角演員","<p>於是看完電影後你們很開心地討論這部電影...</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你拿起手機約朋友出來看電影","<p>到了電影院後你們選了一部悲劇片","<p>這部電影訴說著整個世界只剩下主角一人，於是只能開始活在幻想之中的故事","<p>你看不太懂這部電影","<p>但是朋友卻默默地流下眼淚","<p>看到他落淚，不知為何自己眼淚也掉下來了...</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你決定自己去看電影","<p>到了電影院後你選了一部愛情片","<p>你完全看不懂這部電影在演什麼","<p>對你來說男女主角的行為動機都過於不理性了","<p>看完電影後，覺得有點浪費了這段時間....</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你決定自己去看電影","<p>到了電影院後你選了一部大便片","<p>你很喜歡看這種評價不太好的電影","<p>剛好這個時段沒有什麼人來","<p>有一種整場都被自己包下來的感覺","<p>你很享受這部電影，看完後你感覺身心暢快....</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"],
+                          ["<h1>你決定自己去看電影","<p>到了電影院後你選了一部悲劇片","<p>這部電影述說著不管主角做了甚麼</p><p>迎來的結局永遠是悲劇的故事","<p>這是一個哀傷的故事","<p>你感覺自己就像電影主角一樣","<p>終究只能走向毀滅...</h1>","<input type = 'button' value = '故事繼續' onclick = 'ch3_s1_End()'>"]];
+        let chapter_in = 0;
+        let Now_Chap = parseInt(localStorage.getItem("Now_Chap"));
+
+        function text_output(ci){
+            localStorage.setItem("cin", ci);
+            let i = 0;
+            Story_Output = "<h1>";
+            Story_Show.innerHTML = Story_Output;
+            time = setInterval(function(){
+                if(i < Story_Line[ci].length){
+                    Story_Output += Story_Line[ci][i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 500); 
+        }
+        function ch3_s1_End(){
+            localStorage.setItem("cin", '-3');
+            localStorage.setItem('Chap_End', '1');
+            Story_Output = '<h1>第三章結束，如果準備完成請按下下一章的按鈕</h1>';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function In_Movie(a){
+            Script_Sel = index_people * 3 + a;
+            tmp = parseInt(localStorage.getItem(chara[index_people])) + parseInt(Movie_Score[Script_Sel]);
+            localStorage.setItem(chara[index_people], tmp );
+            text_output(Script_Sel + 1);
+        }
+        function Before_Cinema(a){
+            index_people = a;
+            if(index_people == 0 & localStorage.getItem("GFriend_Point") == "0"){
+                index_people = 2;
+                localStorage.setItem("GF_Reject_Key", "1")
+                localStorage.setItem("Death_Point",parseInt(localStorage.getItem('Death_Point')) + 2);
+                Story_Output = '<h1>被女神拒絕了，只好自己去看....';
+            }
+            else if(index_people == 1 || index_people == 0){
+                Story_Output = '<h1>我想跟'+who_array[index_people]+'一起去看....</h1>';
+            }
+            else{
+                Story_Output = '<h1>我想要自己去看.....</h1>';
+            }
+            localStorage.setItem("Movie_Who", index_people);
+            Story_Output += "<p><input type = 'button' value = '愛情片' onclick = 'In_Movie(0)'><input type = 'button' value = '大便片' onclick = 'In_Movie(1)'><input type = 'button' value = '悲傷片' onclick = 'In_Movie(2)'></p>";
+            Story_Show.innerHTML = Story_Output;
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            if(localStorage.getItem("cin") == '-2'){
+                chapter_in = 0;
+                text_output(chapter_in);
+            }    
+            else if(localStorage.getItem("cin") == '-3') ch3_s1_End();
+            else   {
+                chapter_in = parseInt(localStorage.getItem("cin"));
+                text_output(chapter_in);
+            }      
+        }
+        window.addEventListener("load", start, false );
+    </script>
+</head>
+<body>
+    <div id = "Story_Show">
+        <h1>Something Error!!!!!</h1>
+    </div>
+</body>
+</html>
