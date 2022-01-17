@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>final_project</title>
+    <style>
+        button,input{
+            border:0;
+            background-color:#003C9D;
+            color:#fff;
+            border-radius:10px;
+        }
+        button:hover{
+            background: #609ca4;
+        }
+        input:hover{
+            background: #609ca4;
+        }
+        .background_img{
+            background-size: 100%;
+            background-image :url(data/pic/menu.png);
+            background-repeat: no-repeat;
+        
+        }
+        iframe{
+            width: 100vw;
+            height: 80vh;
+        }
+        .Main_Scr{
+            width: 100vw;
+            height: 80vh;
+            text-align: center;
+        }
+        .Fun_Box{
+            position: absolute;
+            right: 40%;
+            bottom: 50px;
+            text-align: center;
+        }
+        .title1 {
+            position: absolute;
+            top: 10%;
+            right: 32%;
+            width: 500px;
+            padding: 1rem 2rem calc(1rem + 10px);
+            
+        }
+        .title2{
+            position: absolute;
+            border-bottom: 6px double #000;
+            right: 20%;
+            top: 80%;
+        }
+        .title3{
+            position: absolute;
+            border-bottom: 6px double #000;
+            right: 65%;
+            top: 80%;
+        }    
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script >
+        let Story_Output = "";
+        let Next_Output = "";
+        var playbgm = false;
+        
+        let a = 0 ;
+        function Check_Death(){
+            let DP = parseInt(localStorage.getItem("Death_Point"));
+            let DS = localStorage.getItem("Death_Stage");
+            if(DS == '0' & DP > 3){
+                window.open("data/Death_End.html","blank");
+                localStorage.setItem("Death_Stage", 1);
+                setTimeout(function(){},3500);
+            }
+            else if(DS == '1' & DP > 6){
+                window.open("data/Death_End.html","blank");
+                localStorage.setItem("Death_Stage", 2);
+                setTimeout(function(){},3500);
+            }
+            else if(DS == '2' & DP > 9){
+                window.open("data/Death_End.html","blank");
+                localStorage.setItem("Death_Stage", 3);
+                setTimeout(function(){},16000);
+            }
+            else if(DS == '3' & DP > 12){
+                window.open("data/Death_End.html","blank");
+                setTimeout(function(){
+                    localStorage.clear();
+                    window.close();
+                },10200);
+            }
+        }
+        function Load_Game(){
+            $(".background_img").css("background-image","url(data/pic/start.png)");
+            let Now_Chap = localStorage.getItem('Now_Chap');
+            if(Now_Chap == '0')      Story_Begin();
+            else if(Now_Chap == '1') Story_Ch1();
+            else if(Now_Chap == '2') Story_Ch2();
+            else if(Now_Chap == '3') Story_Ch3();
+            else if(Now_Chap == '4') Story_Ch4();
+            else if(Now_Chap == '5') Story_Ch5();
+            else if(Now_Chap == '6') End_Story();
+        }
+        function Fresh_Game(){
+            $(".background_img").css("background-image","url(data/pic/menu.png)");
+            window.alert("遊戲已重置")
+            localStorage.clear();
+            localStorage.setItem('Now_Chap', '0');
+            localStorage.setItem('ch0', '0');
+            localStorage.setItem('Chap_End', '0');
+            localStorage.setItem('Friend_Point', '0');
+            localStorage.setItem('GFriend_Point', '0');
+            localStorage.setItem('Death_Point', '0');
+            localStorage.setItem('Death_Stage', '0');
+            Game_Menu();
+        }
+        function Initial_Game(){
+            $(".background_img").css("background-image","url(data/pic/menu.png)");
+            localStorage.clear();
+            localStorage.setItem('Now_Chap', '0');
+            localStorage.setItem('ch0', '0');
+            localStorage.setItem('Chap_End', '0');
+            localStorage.setItem('Friend_Point', '0');
+            localStorage.setItem('GFriend_Point', '0');
+            localStorage.setItem('Death_Point', '0');
+            localStorage.setItem('Death_Stage', '0');
+            Story_Begin();
+        }
+        function Game_Over(){
+            if(localStorage.getItem("ch0")>4){
+                a = 0;
+                $(".background_img").css("background-image","url(data/pic/end.jpg)");
+                let time = setInterval(function(){
+                    let x = Math.floor(Math.random()*800);
+                    let y = Math.floor(Math.random()*400);
+                    let z = Math.floor(Math.random()*3) + 1;
+                    window.open('data/pic/0'+z+'.jpg', '_blank', "config screenX = " + x + ", screenY = " + y + ", height = 600, width = 600, location = no");
+                    a++;
+                    if(a >= 15){
+                        clearInterval(time);
+                        Story_Output = "<h1 style = 'color:green'>你從噩夢中驚醒<p>不知道為什麼，你對這個早晨和噩夢有強烈的既視感<p>感覺已經不是第一次了</h1><input type = 'button' value = '故事繼續' onclick = 'Story_Begin()'> ";
+                        Story_Show.innerHTML = Story_Output;
+                    }
+                }, 1000);
+            }
+            Story_Output = '<h1>GAME_OVER</h1><h2>Do you want restart?</h2><button id = "Restart_Game">restart</button>';
+            Story_Show.innerHTML = Story_Output;
+            let Restart_Game = document.getElementById("Restart_Game");
+            Restart_Game.addEventListener("click", Story_Begin, false);
+        }
+        function End_Story(){
+            Check_Death();
+            $(".background_img").css("background-image","url(data/pic/end.jpg)");
+            console.log(parseInt(localStorage.getItem('Death_Point')));
+            console.log(parseInt(localStorage.getItem('GFriend_Point')));
+            console.log(parseInt(localStorage.getItem('Friend_Point')));
+            if(parseInt(localStorage.getItem('GFriend_Point')) > 10){
+                Story_Output = '<iframe src = "data/END_GFriend.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            if(parseInt(localStorage.getItem('Friend_Point')) > 10){
+                Story_Output = '<iframe src = "data/END_Friend.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            else{
+                Story_Output = '<iframe src = "data/END_Killer.html" frameborder = "0">';
+                Story_Show.innerHTML = Story_Output;
+            }
+            return;
+        }
+        function Next_Story(){
+            Check_Death();
+            if(localStorage.getItem('Chap_End') == '1'){
+                let Now_Chap = localStorage.getItem('Now_Chap');
+                if(Now_Chap == '1')      Story_Ch2();
+                else if(Now_Chap == '2') Story_Ch3();
+                else if(Now_Chap == '3') Story_Ch4();
+                else if(Now_Chap == '4') Story_Ch5();
+                else if(Now_Chap == '5')  End_Story();
+            }
+        }
+        function Story_Ch5(){
+            Check_Death();
+            localStorage.setItem('Now_Chap', '5');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch5_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch4(){
+            Check_Death();
+            localStorage.setItem('Now_Chap', '4');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch4_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch3(){
+            Check_Death();
+            localStorage.setItem('Now_Chap', '3');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch3_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch2(){
+            Check_Death();
+            localStorage.setItem('Now_Chap', '2');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch2_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Ch1(){
+            Check_Death();
+            localStorage.setItem('Now_Chap', '1');
+            localStorage.setItem('Chap_End', '0');
+            Story_Output = '<iframe src = "data/ch1_s1.html" frameborder = "0">';
+            Story_Show.innerHTML = Story_Output;
+        }
+        function Story_Begin(){
+            $(".background_img").css("background-image","url(data/pic/start.png)");
+            let tmp = parseInt(localStorage.getItem('ch0'));
+            localStorage.setItem('ch0', tmp + 1);
+            let Story_Line = ["<h1><p>你再次從夢中醒來</p>","<p>一旁的鬧鐘顯示現在是早上8點</p>","<p>感覺到外面正出大太陽</p>","<p>這在冬天是個難得的好日子</p>","你決定....</h1>","<input type = 'button' value = '繼續睡' onclick = 'Game_Over()'><input type = 'button' value = '起床' onclick = 'Story_Ch1()'>"];
+            let i = 0;
+            Story_Output = "";
+            time =setInterval(function(){
+                if(i < 6){
+                    Story_Output += Story_Line[i];
+                    Story_Show.innerHTML = Story_Output;
+                    i++;
+                }
+                else{
+                    clearInterval(time);
+                }
+            }, 100);
+        }
+        function Game_Rule(){
+            Story_Output = '<h2><p>本遊戲沒有存檔功能<p>若中途離開遊戲後重開遊戲時<p>點選讀取可以回到上次的離開時的位置<p>若直接開始遊戲則會重製紀錄<p>過程可能會出現令人不適的情景<p>若感到不舒服請!!!離開遊戲!!!</h2><button id = "Rule_back"style="width:100px;height:30px; ">返回</button>';
+            Story_Show.innerHTML = Story_Output;
+            document.getElementById("Rule_back").addEventListener("click", Game_Menu,false);
+        }
+        function Game_Menu(){
+            $(".background_img").css("background-image","url(data/pic/menu.png)");
+            Story_Output = '<button id = "Start_Button"style="width:100px;height:30px; ">start</button><button id = "Rule_Button"style="width:100px;height:30px; ">rule</button><img src = "data/pic/title.jpg" class = "title1"><a href = "https://www.facebook.com/profile.php?id=100006854466740" target = "blank" class = "title3">林家安00957049</a><a href = "https://www.facebook.com/profile.php?id=100000475453507" target = "blank" class = "title2">鄭立揚00957026</a>';
+            Story_Show.innerHTML = Story_Output;
+            document.getElementById("Start_Button").addEventListener("click", Initial_Game,false);
+            document.getElementById("Rule_Button").addEventListener("click", Game_Rule,false);
+        }
+        function start(){
+            let Story_Show = document.getElementById("Story_Show");
+            Game_Menu();
+        }
+        function Music_Play(){
+            if(playbgm == false){
+                playbgm = true;
+                document.getElementById("bgm").loop = true;
+                document.getElementById("bgm").play();
+            }
+            else{
+                document.getElementById("bgm").pause();
+                playbgm = false;
+            }
+        }
+        function play(){
+            console.log("in")
+            document.getElementById("bgm2").loop = true;
+            document.getElementById("bgm2").play();
+            
+            document.getElementById("bgm2").pause();
+        }
+        window.addEventListener("load",start,false);
+    </script>
+</head>
+<body class = "background_img">
+    
+    <div >
+        <audio id="bgm" src="data/audio/play.mp3" preload="auto"></audio>
+        <audio id="bgm2" src="data/audio/1.mp3" preload="auto"></audio>
+        <div id = "Story_Show" class = "Main_Scr">
+        </div>
+         
+        <div class = "Fun_Box">
+            
+            <h2>功能表</h2>
+            <button  onclick = "Next_Story()">下一個章節</button>
+            <button  onclick = "Load_Game()">讀檔</button>
+            <button  onclick="Music_Play()" >播放/停止音樂</button>
+            <button  onclick = "Game_Menu()">回首頁</button>
+            <button  onclick = "Fresh_Game()">重置遊戲</button>
+            
+        </div>
+    </div>
+    
+</body>
+</html>
